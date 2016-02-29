@@ -35,11 +35,11 @@ impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
 
     fn next(&mut self) -> Option<Token> {
         match *self.iter.peek().unwrap_or(&'.') {
-            '('       => {Some(Token::DelimL("(".to_string())); self.next() },
+            '('       => Some(Token::DelimL(self.iter.by_ref().collect())),
             // ')'       => {Some(Token::DelimR(self.iter.by_ref().collect()))},
             // ','       => {Some(Token::Separator(self.iter.by_ref().collect()))},
             // '='       => {Some(Token::Implies(self.iter.by_ref().collect()))},
-            '1'...'9' => Some(Token::Atom(self.iter.by_ref().collect())),
+            '1'...'9' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_numeric()).collect())),
             'A'...'Z' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_uppercase()).collect())),
             'a'...'z' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_lowercase()).collect())),
             '.' => None,
@@ -49,11 +49,11 @@ impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
 }
 
 fn main(){
-    let args: Vec<_> = env::args().collect();
+    let args: Vec<_> = env::args().collect(); //Strings?
     // let re = Regex::new(r"\.rsc$");
     // assert!(re.unwrap().is_match(&args[0]));
 
-    let input = "aa (aabbB)".chars();
+    let input = "123 456".chars();
     let tokenizer = Tokenizer::new(input);
 
     for token in tokenizer {
