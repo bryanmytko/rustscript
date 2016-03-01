@@ -1,2 +1,5 @@
-name = "bryan"
-puts "hello world, " + name
+1 + 1 = 2
+
+def foobar
+ puts test
+end
