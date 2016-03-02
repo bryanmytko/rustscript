@@ -4,7 +4,6 @@ use std::io::prelude::*;
 use std::fs::File;
 use std::path::Path;
 use std::env;
-use regex::Regex;
 use std::iter::Peekable;
 
 #[derive(Eq, PartialEq, Debug, Clone)]
@@ -66,17 +65,33 @@ fn main(){
     let file_name = env::args().nth(1).unwrap();
     let file = load_file(file_name);
     let tokenizer = Tokenizer::new(file.chars());
+    let mut current_expression = Vec::new();
 
     for token in tokenizer {
+        match token {
+            Token::Integer(_) => current_expression.push(token),
+            Token::Plus(_)    => current_expression.push(token),
+            Token::Minus(_)   => current_expression.push(token),
+            Token::Div(_)     => current_expression.push(token),
+            Token::Mod(_)     => current_expression.push(token),
+            Token::Equal(_)   => current_expression.push(token),
+            Token::Ln(_)      => { execute_line(&current_expression); current_expression.clear() },
+            _                 => println!("skip"),
+        }
+
+        // println!("{:?}", token);
+    }
+}
+
+/* Test Executing Lines in the Parser */
+fn execute_line(line: &Vec<Token>){
+    println!("Here is a line: ");
+    for token in line {
         println!("{:?}", token);
     }
 }
 
 fn load_file<P: AsRef<Path>>(path: P) -> String {
-    // @TODO Check filetype? Is this really necessary?
-    // let re = Regex::new(r"\.rsc$");
-    // assert!(re.unwrap().is_match(&path);
-
     let mut file = File::open(path).unwrap();
     let mut file_buffer = String::new();
     file.read_to_string(&mut file_buffer).unwrap();
