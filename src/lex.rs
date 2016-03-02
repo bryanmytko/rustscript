@@ -9,13 +9,21 @@ use std::iter::Peekable;
 
 #[derive(Eq, PartialEq, Debug, Clone)]
 pub enum Token {
-    DelimL(String),
-    DelimR(String),
+    Atom(String),
+    ParenL(String),
+    ParenR(String),
     Separator(String),
     Implies(String),
+    Integer(String),
     Variable(String),
-    Atom(String),
+    Equal(String),
     Whitespace(String),
+    Plus(String),
+    Minus(String),
+    Div(String),
+    Mult(String),
+    Mod(String),
+    Ln(String),
 }
 
 pub struct Tokenizer<I: Iterator<Item=char>> {
@@ -35,19 +43,21 @@ impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
 
     fn next(&mut self) -> Option<Token> {
         match *self.iter.peek().unwrap_or(&'♥') {
-            // @TODO this is wrong; overflows buffer. Use take(1)
-            '('       => Some(Token::DelimL(self.iter.by_ref().collect())),
-            // ')'    => {Some(Token::DelimR(self.iter.by_ref().collect()))},
-            // ','    => {Some(Token::Separator(self.iter.by_ref().collect()))},
-            // '='    => {Some(Token::Implies(self.iter.by_ref().collect()))},
-            '1'...'9' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_numeric()).collect())),
-            'A'...'Z' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_uppercase()).collect())),
-            'a'...'z' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_lowercase()).collect())),
-            '+'       => Some(Token::Atom(self.iter.by_ref().take(1).collect())),
+            '('       => Some(Token::ParenL(self.iter.by_ref().take(1).collect())),
+            ')'       => Some(Token::ParenR(self.iter.by_ref().take(1).collect())),
+            ','       => Some(Token::Separator(self.iter.by_ref().take(1).collect())),
+            '='       => Some(Token::Equal(self.iter.by_ref().take(1).collect())),
+            '+'       => Some(Token::Plus(self.iter.by_ref().take(1).collect())),
+            '-'       => Some(Token::Minus(self.iter.by_ref().take(1).collect())),
+            '/'       => Some(Token::Div(self.iter.by_ref().take(1).collect())),
+            '*'       => Some(Token::Mult(self.iter.by_ref().take(1).collect())),
+            '%'       => Some(Token::Mod(self.iter.by_ref().take(1).collect())),
+            '1'...'9' => Some(Token::Integer(self.iter.by_ref().take_while(|&c| c.is_numeric()).collect())),
+            'A'...'z' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_alphabetic()).collect())),
+            '\n'      => Some(Token::Ln(self.iter.by_ref().take(1).collect())),
             ' '       => Some(Token::Whitespace(self.iter.by_ref().take(1).collect())),
-            '♥'       => None, // @TODO remove: unwrap_or condition
-            _         => None, // @TODO Currently ends when there is an undefined token. Research skipping.
-                               // self.iter.skip(&self);
+            '♥'       => None, // @TODO Remove: unwrap_or condition
+            _         => None, // @TODO Do we want None on invalid syntax?
         }
     }
 }
