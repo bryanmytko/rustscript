@@ -1,4 +1,6 @@
-1 + 1 = 2
+a = 4
+b = a + 1
+
 
 Bryan Mytko
 
