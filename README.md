@@ -35,4 +35,10 @@ Running `target/debug/rustscript test.rsc`
 
 *Currently in development*
 
-    [Rule { name: "Test", pattern: [a-z] }]
+    [
+      Rule { name: "Var", pattern: ^([:lower:][:alnum:]*)$ },
+      Rule { name: "Integer", pattern: ^([:digit]+)$ },
+      Rule { name: "AssignVar", pattern: ^([:lower:][:alnum:]*)=(.*)$ },
+      Rule { name: "Add", pattern: ^(.*)+(.*)$ },
+      Rule { name: "Subtract", pattern: ^(.*)-(.*)$ }
+    ]
