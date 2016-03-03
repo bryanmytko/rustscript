@@ -21,7 +21,7 @@ impl Parser {
             ("Integer", vec![int]),
             ("AssignVar", vec![var, "=", exp]),
             ("Add", vec![exp, "+", exp]),
-            ("Subtract", vec![exp, "+", exp]),
+            ("Subtract", vec![exp, "-", exp]),
         ];
 
         let mut rules = Vec::new();
