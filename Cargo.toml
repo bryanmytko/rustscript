@@ -5,7 +5,3 @@ authors = ["Bryan Mytko <bryanmytko@gmail.com>"]
 
 [dependencies]
 regex = "*"
-
-[[bin]]
-name = "lex"
-path = "src/lex.rs"
