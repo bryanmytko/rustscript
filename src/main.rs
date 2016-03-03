@@ -7,9 +7,11 @@ use std::path::Path;
 
 mod lexer;
 mod parser;
+mod eval;
 
 use lexer::Tokenizer;
 use parser::*;
+use eval::*;
 
 fn main(){
     let file_name = env::args().nth(1).unwrap();
