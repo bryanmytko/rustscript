@@ -42,3 +42,7 @@ Running `target/debug/rustscript test.rsc`
       Rule { name: "Add", pattern: ^(.*)+(.*)$ },
       Rule { name: "Subtract", pattern: ^(.*)-(.*)$ }
     ]
+
+### Evaluator
+
+¯\_(ツ)_/¯
