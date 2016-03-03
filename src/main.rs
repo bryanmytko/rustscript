@@ -1,3 +1,5 @@
+extern crate regex;
+
 use std::env;
 use std::io::prelude::*;
 use std::fs::File;
@@ -13,14 +15,17 @@ fn main(){
     let file_name = env::args().nth(1).unwrap();
     let file = load_file(file_name);
 
+    // @TODO Add method to Tokenizer? tokenizer.tokenize(file)
     let tokenizer = Tokenizer::new(file.chars());
+    let parser    = Parser::new();
 
+    // @TODO parser.parse(tokenizer)...
 
     for token in tokenizer{
         println!("{:?}", token);
     }
 
-    // let mut current_expression = Vec::new();
+    println!("{:?}", parser.rules);
 }
 
 fn load_file<P: AsRef<Path>>(path: P) -> String {
