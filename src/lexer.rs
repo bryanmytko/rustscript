@@ -1,7 +1,7 @@
 use std::iter::Peekable;
 
 #[derive(Eq, PartialEq, Debug, Clone)]
-/* @TODO This is just random junk. Will need a real grammer eventually. */
+/* @TODO This is just random junk. Will need a real grammer eventually */
 pub enum Token {
     Atom(String),
     ParenL(String),

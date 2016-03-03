@@ -15,7 +15,6 @@ fn main(){
     let file_name = env::args().nth(1).unwrap();
     let file = load_file(file_name);
 
-    // @TODO Add method to Tokenizer? tokenizer.tokenize(file)
     let tokenizer = Tokenizer::new(file.chars());
     let parser    = Parser::new();
 
