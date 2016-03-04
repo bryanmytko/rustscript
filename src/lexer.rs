@@ -18,6 +18,7 @@ pub enum Token {
     Mult(String),
     Mod(String),
     Ln(String),
+    Keyword(String),
 }
 
 pub struct Tokenizer<I: Iterator<Item=char>> {
@@ -36,11 +37,14 @@ impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
     type Item = Token;
 
     fn next(&mut self) -> Option<Token> {
+        // how to match these
+        // let keywords = vec!["def", "end", "if", "else", "elsif"];
+
         match *self.iter.peek().unwrap_or(&'♥') {
             '('       => Some(Token::ParenL(self.iter.by_ref().take(1).collect())),
-            ')'       => Some(Token::ParenR(self.iter.by_ref().take(1).collect())),
+            ')'       => Some(Token::ParenR( self.iter.by_ref().take(1).collect())),
             ','       => Some(Token::Separator(self.iter.by_ref().take(1).collect())),
-            '='       => Some(Token::Equal(self.iter.by_ref().take(1).collect())),
+            '='       => Some(Token::Equal(self.iter.by_ref().take_while(|&c| c == '=').collect())),
             '+'       => Some(Token::Plus(self.iter.by_ref().take(1).collect())),
             '-'       => Some(Token::Minus(self.iter.by_ref().take(1).collect())),
             '/'       => Some(Token::Div(self.iter.by_ref().take(1).collect())),
@@ -50,7 +54,7 @@ impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
             'A'...'z' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_alphabetic()).collect())),
             '\n'      => Some(Token::Ln(self.iter.by_ref().take(1).collect())),
             ' '       => Some(Token::Whitespace(self.iter.by_ref().take(1).collect())),
-            '♥'       => None, // @TODO Remove: unwrap_or condition
+            '♥'       => None,
             _         => None, // @TODO Do we want None on invalid syntax?
         }
     }
