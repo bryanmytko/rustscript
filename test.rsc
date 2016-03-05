@@ -1,8 +1,10 @@
 a = 4
 b = a + 1
 
+farm* = 4
+
 if a == b
-  print "equal"
+  1
 else
-  print "not equal"
+  1
 end
