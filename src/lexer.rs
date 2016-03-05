@@ -18,7 +18,6 @@ pub enum Token {
     Mult(String),
     Mod(String),
     Ln(String),
-    Keyword(String),
 }
 
 pub struct Tokenizer<I: Iterator<Item=char>> {
