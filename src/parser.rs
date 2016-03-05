@@ -50,4 +50,8 @@ impl Parser {
 
         Parser { rules: rules }
     }
+
+    // pub fn parse_tokens<'a>(&'a self, token: <Token<'a>>) -> Vec<_> {
+    //     let mut res: Vec<_>; // @TODO need to parse lines I think
+    // }
 }
