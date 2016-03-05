@@ -33,5 +33,6 @@ fn load_file<P: AsRef<Path>>(path: P) -> String {
     let mut file = File::open(path).unwrap();
     let mut file_buffer = String::new();
     file.read_to_string(&mut file_buffer).unwrap();
+    println!("{:?}", file_buffer);
     file_buffer
 }
