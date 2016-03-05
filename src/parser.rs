@@ -15,6 +15,7 @@ impl Parser {
         let var = "([:lower:][:alnum:]*)";
         let int = "([:digit]+)";
         let exp = "(.*)";
+        let keyword = "(def|end|if|else|elsif|while|do)";
 
         let patterns = vec![
             ("Var", vec![var]),
@@ -24,6 +25,7 @@ impl Parser {
             ("Subtract", vec![exp, "-", exp]),
             ("Comparison", vec![exp, "==", exp]),
             ("!Comparison", vec![exp, "!=", exp]),
+            ("Keyword", vec![keyword]),
         ];
 
         let mut rules = Vec::new();
