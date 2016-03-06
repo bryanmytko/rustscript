@@ -1,8 +1,9 @@
 use std::iter::Peekable;
 use regex::Regex;
+use itertools::Itertools;
 
-#[derive(Eq, PartialEq, Debug, Clone)]
 /* @TODO This is just random junk. Will need a real grammer eventually */
+#[derive(Eq, PartialEq, Debug, Clone)]
 pub enum Token {
     Atom(String),
     ParenL(String),
@@ -21,6 +22,7 @@ pub enum Token {
     Ln(String),
 }
 
+#[derive(Clone)]
 pub struct Tokenizer<I: Iterator<Item=char>> {
     iter: Peekable<I>,
 }
@@ -36,19 +38,7 @@ impl<I: Iterator<Item=char>> Tokenizer<I> {
 impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
     type Item = Token;
 
-
     fn next(&mut self) -> Option<Token> {
-        // let re = Regex::new(r"^\s*").unwrap();
-        // if let Some((_, o)) = re.is_match("asdf"){
-        //     self.iter.by_ref().take(o);
-        // }
-
-        /* Since take_while consumes the last unmatched value it doesn't work
-           for gathering atoms / strings. (argh)
-
-           Exploring a way to do this via match. */
-
-
         match *self.iter.peek().unwrap_or(&'♥') {
             '(' => Some(Token::ParenL(self.iter.by_ref().take(1).collect())),
             ')' => Some(Token::ParenR(self.iter.by_ref().take(1).collect())),
@@ -59,6 +49,9 @@ impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
             '/' => Some(Token::Div(self.iter.by_ref().take(1).collect())),
             '*' => Some(Token::Mult(self.iter.by_ref().take(1).collect())),
             '%' => Some(Token::Mod(self.iter.by_ref().take(1).collect())),
+            'a'...'z' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_alphabetic()).collect())),
+            'A'...'Z' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_alphabetic()).collect())),
+            '1'...'9' => Some(Token::Atom(self.iter.by_ref().take_while(|&c| c.is_alphabetic()).collect())),
             '\r' | '\n' => Some(Token::Ln(self.iter.by_ref().take(1).collect())),
             ' ' => Some(Token::Whitespace(self.iter.by_ref().take(1).collect())),
             '♥' => None,
