@@ -24,13 +24,21 @@ pub enum Token {
 #[derive(Clone)]
 pub struct Tokenizer<I: Iterator<Item=char>> {
     iter: Peekable<I>,
+    pos: usize,
 }
 
 impl<I: Iterator<Item=char>> Tokenizer<I> {
     pub fn new(iter: I) -> Tokenizer<I> {
         Tokenizer {
             iter: iter.peekable(),
+            buf: k
+            pos: 0,
         }
+    }
+
+    fn parse_word(&mut self) -> String {
+        // Need to parse until non alpha
+        "foo".to_string()
     }
 }
 
@@ -38,21 +46,19 @@ impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
     type Item = Token;
 
     fn next(&mut self) -> Option<Token> {
-        // let mut token = Some(Token::Atom(self.iter.by_ref().take(1).collect()));
 
-        match *self.iter.peek().unwrap() {
-            'a'...'z' => {
-                let mut optional = Some(Token::Atom(self.iter.by_ref().take(1).collect()));
-                // while let Some(i) = optional {
-                //     if i == Token::Atom("foo".to_string()){
-                //         optional = Some(Token::Atom("".to_string()));
-                //     } else {
-                //         break;
-                //     }
-                // }
-                self.iter.peek();
-                optional
-            },
+        if self.iter.size_hint().1.unwrap() >= self.pos {
+            self.pos += 1;
+        } else {
+            return None;
+        }
+
+        println!("{:?}", self.pos);
+
+        /* Need to match over something other than "next". Buffer position? */
+        match self.iter.next().unwrap() {
+            '\n' => Some(Token::Ln("\n".to_string())),
+            'a'...'z' => Some(Token::Atom(self.parse_word())),
             _   => None,
         }
     }
