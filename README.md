@@ -12,24 +12,50 @@ There is currently no real grammar. That will be fleshed out as some real rules 
 
 Running `target/debug/rustscript test.rsc`
 
+    Atom("abc")
+    Whitespace
+    Eq("=")
+    Whitespace
+    Integer("4")
+    Ln
+    Atom("b")
+    Whitespace
+    Eq("=")
+    Whitespace
+    Atom("a")
+    Whitespace
+    Plus
+    Whitespace
     Integer("1")
-    Plus("+")
-    Whitespace(" ")
+    Ln
+    Ln
+    Atom("farm")
+    Whitespace
+    Eq("=")
+    Whitespace
+    Integer("4")
+    Ln
+    Ln
+    Atom("if")
+    Whitespace
+    Atom("a")
+    Whitespace
+    Eq("==")
+    Whitespace
+    Atom("b")
+    Ln
+    Whitespace
+    Whitespace
     Integer("1")
-    Equal("=")
-    Whitespace(" ")
+    Ln
+    Atom("else")
+    Ln
+    Whitespace
+    Whitespace
     Integer("2")
-    Ln("\n")
-    Atom("Bryan")
-    Atom("Mytko")
-    Ln("\n")
-    Atom("def")
-    Atom("foobar")
-    Whitespace(" ")
-    Whitespace(" ")
-    Atom("puts")
-    Atom("test")
+    Ln
     Atom("end")
+    Ln
 
 ### Parser
 
@@ -40,9 +66,12 @@ Running `target/debug/rustscript test.rsc`
       Rule { name: "Integer", pattern: ^([:digit]+)$ },
       Rule { name: "AssignVar", pattern: ^([:lower:][:alnum:]*)=(.*)$ },
       Rule { name: "Add", pattern: ^(.*)+(.*)$ },
-      Rule { name: "Subtract", pattern: ^(.*)-(.*)$ }
+      Rule { name: "Subtract", pattern: ^(.*)-(.*)$ },
+      Rule { name: "Comparison", pattern: ^(.*)==(.*)$ },
+      Rule { name: "!Comparison", pattern: ^(.*)!=(.*)$ },
+      Rule { name: "Keyword", pattern: ^(def|end|if|else|elsif|while|do)$ }
     ]
 
 ### Evaluator
 
-¯\_(ツ)_/¯
+    ¯\_(ツ)_/¯
