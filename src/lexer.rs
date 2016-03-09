@@ -24,21 +24,37 @@ pub enum Token {
 #[derive(Clone)]
 pub struct Tokenizer<I: Iterator<Item=char>> {
     iter: Peekable<I>,
+    buf: String,
     pos: usize,
 }
 
 impl<I: Iterator<Item=char>> Tokenizer<I> {
-    pub fn new(iter: I) -> Tokenizer<I> {
+    pub fn new(iter: I, buf: String) -> Tokenizer<I> {
         Tokenizer {
             iter: iter.peekable(),
-            buf: k
+            buf: buf,
             pos: 0,
         }
     }
 
-    fn parse_word(&mut self) -> String {
+    fn parse_word(&mut self) -> Option<Token> {
         // Need to parse until non alpha
-        "foo".to_string()
+        // self.char_at(self.pos).to_string()
+        // let (start, end) =
+        //             match (regex!(r"^'([^']|\\')*'")).find(self.buf[self.pos..]) {
+        //                             Some((s, e)) => (s + self.pos, e + self.pos),
+        //                                         None => return None
+        //                                                     };
+        //     self.pos = end;
+        //         Some(Token::StrLit(self.buf[start + 1..end - 1]).to_string()))
+        let(start, end) =
+            match (regex!(r"^'([^']|\\')*'")).find(&self.buf[self.pos..]) {
+                Some((s, e)) => (s + self.pos, e + self.pos),
+                None => { return None },
+            };
+
+        self.pos = end;
+        Some(Token::Atom(self.buf[start + 1..end - 1].to_string()))
     }
 }
 
@@ -46,19 +62,19 @@ impl<I: Iterator<Item=char>> Iterator for Tokenizer<I> {
     type Item = Token;
 
     fn next(&mut self) -> Option<Token> {
-
         if self.iter.size_hint().1.unwrap() >= self.pos {
             self.pos += 1;
         } else {
             return None;
         }
 
-        println!("{:?}", self.pos);
+        println!("Position: {:?}", self.pos);
 
         /* Need to match over something other than "next". Buffer position? */
-        match self.iter.next().unwrap() {
+        // match self.iter.next().unwrap() {
+        match self.buf.char_at(self.pos) {
             '\n' => Some(Token::Ln("\n".to_string())),
-            'a'...'z' => Some(Token::Atom(self.parse_word())),
+            'a'...'z' => self.parse_word(),
             _   => None,
         }
     }

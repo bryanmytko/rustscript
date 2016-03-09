@@ -1,3 +1,7 @@
+#![feature(str_char)]
+#![feature(plugin)]
+
+#![plugin(regex_macros)]
 extern crate regex;
 
 use std::env;
@@ -16,8 +20,9 @@ use eval::*;
 fn main(){
     let file_name = env::args().nth(1).unwrap();
     let file = load_file(file_name);
+    let file_string = String::from(file.chars().as_str());
 
-    let tokenizer = Tokenizer::new(file.chars());
+    let tokenizer = Tokenizer::new(file.chars(), file_string);
     let parser    = Parser::new();
 
     // @TODO parser.parse(tokenizer)...
