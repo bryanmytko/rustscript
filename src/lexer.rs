@@ -9,7 +9,8 @@ pub enum Token {
     Variable(String),
     Separator(String),
     Implies(String),
-    Eq(String), // @TODO Need to distinguish =, ==, ===
+    EqComp(String),
+    Assignment,
     ParenL,
     ParenR,
     Plus,
@@ -37,30 +38,34 @@ impl<I: Iterator<Item=char>> Tokenizer<I> {
         }
     }
 
-    fn match_pattern(&mut self, pattern: Regex) -> String {
+    fn match_pattern(&mut self, pattern: Regex) -> &str {
         let(start, end) =
             match pattern.find(&self.buf[self.pos..]) {
                 Some((s, e)) => (s + self.pos, e + self.pos),
-                None => { return String::from("") },
+                None => { return "" },
             };
 
         self.pos = end;
-        self.buf[start..end].to_string()
+        &self.buf[start..end]
     }
 
     fn parse_word(&mut self) -> Option<Token> {
         let result = self.match_pattern(Regex::new(r"[:alpha:]*").unwrap());
-        Some(Token::Atom(result))
+        Some(Token::Atom(String::from(result)))
     }
 
     fn parse_digit(&mut self) -> Option<Token> {
         let result = self.match_pattern(Regex::new(r"\d*").unwrap());
-        Some(Token::Integer(result))
+        Some(Token::Integer(String::from(result)))
     }
 
     fn parse_eq(&mut self) -> Option<Token> {
         let result = self.match_pattern(Regex::new(r"=*").unwrap());
-        Some(Token::Eq(result))
+        match result {
+            "="  => Some(Token::Assignment),
+            "==" => Some(Token::EqComp(String::from("=="))),
+            _    => None,
+        }
     }
 }
 
