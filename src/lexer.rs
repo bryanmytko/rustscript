@@ -4,7 +4,7 @@ use regex::Regex;
 /* @TODO This is just random junk. Will need a real grammer eventually */
 #[derive(Eq, PartialEq, Debug, Clone)]
 pub enum Token {
-    Atom(String), // @TODO consider &'a str instead?
+    Atom(String),
     Integer(String),
     Variable(String),
     Separator(String),
@@ -51,19 +51,19 @@ impl<I: Iterator<Item=char>> Tokenizer<I> {
 
     fn parse_word(&mut self) -> Option<Token> {
         let result = self.match_pattern(Regex::new(r"[:alpha:]*").unwrap());
-        Some(Token::Atom(String::from(result)))
+        Some(Token::Atom(result.to_owned()))
     }
 
     fn parse_digit(&mut self) -> Option<Token> {
         let result = self.match_pattern(Regex::new(r"\d*").unwrap());
-        Some(Token::Integer(String::from(result)))
+        Some(Token::Integer(result.to_owned()))
     }
 
     fn parse_eq(&mut self) -> Option<Token> {
         let result = self.match_pattern(Regex::new(r"=*").unwrap());
         match result {
             "="  => Some(Token::Assignment),
-            "==" => Some(Token::EqComp(String::from("=="))),
+            "==" => Some(Token::EqComp("==".to_owned())),
             _    => None,
         }
     }
