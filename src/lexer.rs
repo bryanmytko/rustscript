@@ -4,7 +4,7 @@ use regex::Regex;
 /* @TODO This is just random junk. Will need a real grammer eventually */
 #[derive(Eq, PartialEq, Debug, Clone)]
 pub enum Token {
-    Atom(String),
+    Atom(String), // @TODO consider &'a str instead?
     Integer(String),
     Variable(String),
     Separator(String),
