@@ -13,7 +13,7 @@ mod lexer;
 mod parser;
 mod eval;
 
-use lexer::Tokenizer;
+use lexer::*;
 use parser::*;
 use eval::*;
 
@@ -22,16 +22,16 @@ fn main(){
     let file = load_file(file_name);
     let file_string = String::from(file.chars().as_str());
 
-    let tokenizer = Tokenizer::new(file.chars(), file_string);
-    let parser    = Parser::new();
+    let tokens = Tokenizer::new(file.chars(), file_string);
+    let parser = Parser::new();
 
-    // @TODO parser.parse(tokenizer)...
+    parser.parse_tokens(&tokens);
 
-    for token in tokenizer{
-        println!("{:?}", token);
-    }
-
-    println!("{:?}", parser.rules);
+    // for token in tokens {
+    //     println!("{:?}", token);
+    // }
+    //
+    // println!("{:?}", parser.rules);
 }
 
 fn load_file<P: AsRef<Path>>(path: P) -> String {
