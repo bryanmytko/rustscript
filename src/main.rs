@@ -28,9 +28,8 @@ fn main(){
     parser.parse_tokens(&tokens);
 
     // for token in tokens {
-    //     println!("{:?}", token);
+    //     println!("test");
     // }
-    //
     // println!("{:?}", parser.rules);
 }
 

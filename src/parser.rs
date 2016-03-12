@@ -52,8 +52,13 @@ impl Parser {
         Parser { rules: rules }
     }
 
+//   impl<I: Iterator<Item=char>> Tokenizer<I> {
+//   pub struct Tokenizer<I: Iterator<Item=char>> {
     pub fn parse_tokens(&self, tokens: &Iterator<Item=Token>) -> String {
-        // let mut res: Vec<_>; // @TODO need to parse lines I think
+        // error: the trait `core::marker::Sized` is not implemented for 
+        // for token in *tokens {
+        //     println!("test");
+        // }
         "Test".to_string()
     }
 }
