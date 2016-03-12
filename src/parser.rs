@@ -1,4 +1,5 @@
 use regex::Regex;
+use lexer::*;
 
 pub struct Parser {
     pub rules: Vec<Rule>,
@@ -51,7 +52,8 @@ impl Parser {
         Parser { rules: rules }
     }
 
-    // pub fn parse_tokens<'a>(&'a self, token: <Token<'a>>) -> Vec<_> {
-    //     let mut res: Vec<_>; // @TODO need to parse lines I think
-    // }
+    pub fn parse_tokens(&self, tokens: &Iterator<Item=Token>) -> String {
+        // let mut res: Vec<_>; // @TODO need to parse lines I think
+        "Test".to_string()
+    }
 }
