@@ -52,13 +52,12 @@ impl Parser {
         Parser { rules: rules }
     }
 
-//   impl<I: Iterator<Item=char>> Tokenizer<I> {
-//   pub struct Tokenizer<I: Iterator<Item=char>> {
-    pub fn parse_tokens(&self, tokens: &Iterator<Item=Token>) -> String {
-        // error: the trait `core::marker::Sized` is not implemented for 
-        // for token in *tokens {
-        //     println!("test");
-        // }
-        "Test".to_string()
+    pub fn parse_tokens(&self, tokens: &Vec<Token>) -> String {
+        for token in tokens {
+            // Match rules here
+            println!("{:?}", token);
+        }
+
+        "test return".to_string()
     }
 }

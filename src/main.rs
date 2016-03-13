@@ -25,12 +25,7 @@ fn main(){
     let tokens = Tokenizer::new(file.chars(), file_string);
     let parser = Parser::new();
 
-    // parser.parse_tokens(&tokens);
-
-    // for token in tokens {
-    //     println!("test");
-    // }
-    // println!("{:?}", parser.rules);
+    parser.parse_tokens(&tokens);
 }
 
 fn load_file<P: AsRef<Path>>(path: P) -> String {
