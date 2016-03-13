@@ -25,7 +25,7 @@ fn main(){
     let tokens = Tokenizer::new(file.chars(), file_string);
     let parser = Parser::new();
 
-    parser.parse_tokens(&tokens);
+    // parser.parse_tokens(&tokens);
 
     // for token in tokens {
     //     println!("test");

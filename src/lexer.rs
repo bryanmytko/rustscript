@@ -30,12 +30,20 @@ pub struct Tokenizer<I: Iterator<Item=char>> {
 }
 
 impl<I: Iterator<Item=char>> Tokenizer<I> {
-    pub fn new(iter: I, buf: String) -> Tokenizer<I> {
-        Tokenizer {
+    pub fn new(iter: I, buf: String) -> Vec<Token> {
+        let tokenizer = Tokenizer {
             iter: iter.peekable(),
             buf: buf,
             pos: 0,
+        };
+
+        let mut tokens = vec![];
+
+        for token in tokenizer {
+            tokens.push(token);
         }
+
+        tokens
     }
 
     fn match_pattern(&mut self, pattern: Regex) -> &str {
