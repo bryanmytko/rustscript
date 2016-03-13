@@ -54,10 +54,31 @@ impl Parser {
 
     pub fn parse_tokens(&self, tokens: &Vec<Token>) -> String {
         for token in tokens {
-            // Match rules here
-            println!("{:?}", token);
+            match *token {
+                // @TODO replace println! macro with actual parse pattern comparison
+                Token::Atom(ref s) => println!("Atom: {}", s),
+                Token::Integer(ref i) => println!("Integer: {}", i),
+                Token::Variable(ref s) => println!("Variable: {}", s),
+                Token::Separator(ref s) => println!("Separator: {}", s),
+                Token::Implies(ref s) => println!("Implies: {}", s),
+                Token::EqComp(ref s) => println!("EqComp: {}", s),
+                Token::Assignment => println!("="),
+                Token::ParenL => println!("("),
+                Token::ParenR => println!(")"),
+                Token::Plus => println!("+"),
+                Token::Minus => println!("-"),
+                Token::Div => println!("/"),
+                Token::Mult => println!("*"),
+                Token::Mod => println!("%"),
+                Token::Ln => println!("newline"),
+                Token::Whitespace => println!(" "),
+                // @TODO Currently exhaustive, I think we can rely on tokens
+                // from the lexer to be valid. Syntax errors should be handled there.
+                // _ => println!("NOT IMPLEMENTED YET."),
+
+            }
         }
 
-        "test return".to_string()
+        "test return value".to_owned()
     }
 }
