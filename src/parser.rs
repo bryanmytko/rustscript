@@ -52,10 +52,19 @@ impl Parser {
         Parser { rules: rules }
     }
 
-    pub fn parse_tokens(&self, tokens: &Vec<Token>) -> String {
-        for rule in self.rules.iter(){
-          // match pattern... ?
+    pub fn parse_tokens<'a>(&'a self, tokens: &'a Vec<Token>) -> Option<Vec<&Token>> {
+        let mut line = vec![];
+
+        for token in tokens.iter() {
+            match *token {
+                Token::Ln => { line.clear(); return None },
+                _ => line.push(token)
+            }
         }
+        // for rule in self.rules.iter(){
+        //     println!("{:?}", rule);
+        //   // match pattern... ?
+        // }
         // for token in tokens {
         //     match *token {
         //         // @TODO replace println! macro with actual parse pattern comparison
@@ -81,7 +90,7 @@ impl Parser {
         //
         //     }
         // }
-
-        "test return value".to_owned()
+        println!("{:?}", line);
+        Some(line)
     }
 }
